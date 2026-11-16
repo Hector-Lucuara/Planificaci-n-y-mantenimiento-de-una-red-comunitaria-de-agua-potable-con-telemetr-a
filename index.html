@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a23">
+  <meta name="description" content="Una guía interactiva sobre algoritmos para planificar y mantener una red comunitaria de agua potable.">
+  <title>AquaLab | Algoritmos para una red de agua</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="AquaLab, inicio">
+      <span class="brand-mark" aria-hidden="true">A</span>
+      <span>Aqua<span class="brand-light">Lab</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#problema">El reto</a>
+      <a href="#red">La red</a>
+      <a href="#operacion">Operación</a>
+      <a href="#telemetria">Telemetría</a>
+      <a class="nav-cta" href="#conclusiones">Conclusiones <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="hero section-shell" id="inicio">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Proyecto de algoritmos · Acueducto comunitario</p>
+        <h1>Una red de agua.<br><span>Decisiones más inteligentes.</span></h1>
+        <p class="hero-lede">¿Cómo conectar cada caserío al tanque, atender primero las averías urgentes y entender lo que dicen los medidores? Explora las decisiones detrás de una red comunitaria confiable.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#red">Explorar la red <span aria-hidden="true">↓</span></a>
+          <span class="hero-note">8 algoritmos · 1 problema real</span>
+        </div>
+        <div class="hero-stats" aria-label="Datos del problema">
+          <div><strong>7</strong><span>puntos de servicio</span></div>
+          <div><strong>13</strong><span>conexiones posibles</span></div>
+          <div><strong>20 <small>M</small></strong><span>costo mínimo estimado</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div>
+        <div class="art-orbit orbit-two"></div>
+        <div class="water-drop"><span></span></div>
+        <div class="art-label label-one"><i></i> red conectada</div>
+        <div class="art-label label-two"><i></i> datos en tiempo real</div>
+        <div class="art-coordinate">06° 14' N<br>75° 34' O</div>
+      </div>
+    </section>
+
+    <section class="problem-section section-shell" id="problema">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / El reto</p>
+          <h2>Una infraestructura pequeña,<br><span>muchas decisiones.</span></h2>
+        </div>
+        <p class="section-intro">Un municipio rural necesita conectar comunidades y mantener el servicio con recursos limitados. Los algoritmos convierten esos retos cotidianos en decisiones que se pueden explicar y comparar.</p>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card">
+          <span class="card-icon" aria-hidden="true">⌁</span>
+          <span class="card-index">01 — Planificar</span>
+          <h3>Conectar cada punto</h3>
+          <p>Elegir los tramos de tubería que conectan todo el sistema con el costo total más bajo.</p>
+          <span class="card-tags">Kruskal · Prim</span>
+        </article>
+        <article class="problem-card">
+          <span class="card-icon" aria-hidden="true">◎</span>
+          <span class="card-index">02 — Mantener</span>
+          <h3>Encontrar y atender</h3>
+          <p>Recorrer la red, localizar medidores, priorizar daños y organizar el trabajo técnico.</p>
+          <span class="card-tags">BFS · DFS · BST · Greedy</span>
+        </article>
+        <article class="problem-card">
+          <span class="card-icon" aria-hidden="true">⌗</span>
+          <span class="card-index">03 — Entender</span>
+          <h3>Leer los datos</h3>
+          <p>Reducir mensajes de telemetría y comparar lecturas históricas para encontrar cambios.</p>
+          <span class="card-tags">Huffman · LCS</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="network-section" id="red">
+      <div class="section-shell network-shell">
+        <div class="section-heading network-heading">
+          <div>
+            <p class="eyebrow eyebrow-light">02 / Planificación e inspección</p>
+            <h2>La red, <span>tramo a tramo.</span></h2>
+          </div>
+          <p class="section-intro">Cada línea es una conexión posible; su número representa el costo estimado en millones. Prueba los algoritmos y sigue cómo deciden.</p>
+        </div>
+        <div class="network-toolbar">
+          <div class="mode-switch" role="group" aria-label="Algoritmo para explorar la red">
+            <button type="button" class="mode-button is-active" data-mode="kruskal" aria-pressed="true">Kruskal</button>
+            <button type="button" class="mode-button" data-mode="prim" aria-pressed="false">Prim</button>
+            <button type="button" class="mode-button" data-mode="bfs" aria-pressed="false">BFS</button>
+            <button type="button" class="mode-button" data-mode="dfs" aria-pressed="false">DFS</button>
+          </div>
+          <label class="origin-control" for="originSelect">Punto de inicio
+            <select id="originSelect">
+              <option>T</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+            </select>
+          </label>
+        </div>
+        <div class="network-card">
+          <div class="graph-wrap">
+            <svg id="networkGraph" viewBox="0 0 760 470" role="img" aria-label="Grafo interactivo de la red de agua"></svg>
+            <div class="map-legend" aria-label="Leyenda">
+              <span><i class="legend-line"></i> Tramo posible</span>
+              <span><i class="legend-line legend-active"></i> Tramo seleccionado</span>
+              <span><i class="legend-node"></i> Punto de servicio</span>
+            </div>
+          </div>
+          <aside class="graph-aside">
+            <p class="eyebrow">RECORRIDO ACTUAL</p>
+            <h3 id="networkTitle">Kruskal</h3>
+            <p id="networkDescription">Ordena los tramos por costo y agrega los que no forman un ciclo.</p>
+            <div class="network-result" aria-live="polite">
+              <span id="networkStepLabel">Paso 1 de 6</span>
+              <p id="networkStepText">Seleccionando el tramo de menor costo que conecta nuevos puntos.</p>
+              <div class="step-controls">
+                <button type="button" id="stepPrevious" class="icon-button" aria-label="Paso anterior">←</button>
+                <input id="stepRange" type="range" min="0" max="5" value="0" aria-label="Paso del algoritmo">
+                <button type="button" id="stepNext" class="icon-button" aria-label="Paso siguiente">→</button>
+              </div>
+            </div>
+            <div class="network-summary" id="networkSummary" aria-live="polite"></div>
+            <p class="graph-footnote">BFS y DFS cuentan saltos entre puntos; no consideran el costo de cada tubería.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="operations-section section-shell" id="operacion">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">03 / Operación y mantenimiento</p>
+          <h2>Del medidor a la <span>cuadrilla.</span></h2>
+        </div>
+        <p class="section-intro">Los datos de campo también se organizan: un árbol localiza medidores y una estrategia de prioridad reparte el trabajo del día.</p>
+      </div>
+      <div class="operation-grid">
+        <article class="tool-card bst-card">
+          <div class="tool-card-head">
+            <div><span class="tool-kicker">BÚSQUEDA · BST</span><h3>Ubica un medidor</h3></div>
+            <span class="tool-symbol" aria-hidden="true">⌕</span>
+          </div>
+          <p>El árbol binario organiza los códigos para descartar una rama en cada comparación.</p>
+          <div class="inline-form">
+            <label class="sr-only" for="meterCode">Código del medidor</label>
+            <input id="meterCode" type="number" value="107" placeholder="Código del medidor">
+            <button type="button" class="button button-dark" id="searchMeter">Buscar</button>
+          </div>
+          <div id="bstTree" class="tree-visual" aria-label="Árbol de búsqueda de medidores"></div>
+          <div id="meterResult" class="result-note" aria-live="polite"></div>
+        </article>
+
+        <article class="tool-card repairs-card">
+          <div class="tool-card-head">
+            <div><span class="tool-kicker">PRIORIZACIÓN · BUBBLE SORT + GREEDY</span><h3>Organiza las reparaciones</h3></div>
+            <span class="tool-symbol" aria-hidden="true">↗</span>
+          </div>
+          <p>Primero se ordenan las solicitudes por urgencia; después, cada técnico disponible toma la siguiente tarea.</p>
+          <div class="repair-controls">
+            <button type="button" class="button button-dark" id="sortRepairs">Ordenar por urgencia</button>
+            <div class="pass-controls">
+              <button type="button" id="repairPrevious" class="mini-button" aria-label="Pasada anterior">←</button>
+              <span id="repairStepLabel">Lista inicial</span>
+              <button type="button" id="repairNext" class="mini-button" aria-label="Pasada siguiente">→</button>
+            </div>
+          </div>
+          <ol id="repairList" class="repair-list"></ol>
+          <div class="schedule-heading"><span>Asignación de técnicos · horas estimadas</span><span id="scheduleEnd"></span></div>
+          <div id="technicianSchedule" class="technician-schedule"></div>
+          <p class="result-note">La asignación es una heurística: no optimiza distancia de viaje ni dependencias entre averías.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="telemetry-section" id="telemetria">
+      <div class="section-shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">04 / Datos y telemetría</p>
+            <h2>Señales pequeñas,<br><span>decisiones valiosas.</span></h2>
+          </div>
+          <p class="section-intro">Una secuencia puede revelar cambios aunque los datos individuales sigan siendo útiles. Compara los históricos y prueba la compresión.</p>
+        </div>
+        <div class="telemetry-grid">
+          <article class="tool-card lcs-card">
+            <div class="tool-card-head">
+              <div><span class="tool-kicker">HISTÓRICOS · LCS</span><h3>Compara lecturas</h3></div>
+              <span class="tool-symbol" aria-hidden="true">∿</span>
+            </div>
+            <p>LCS encuentra la subsecuencia común más larga respetando el orden de las lecturas.</p>
+            <div class="sequence-inputs">
+              <label>Histórico A <input id="sequenceA" value="10, 12, 15, 14, 13, 16, 18" autocomplete="off"></label>
+              <label>Histórico B <input id="sequenceB" value="10, 12, 20, 14, 13, 16, 19" autocomplete="off"></label>
+            </div>
+            <button type="button" class="button button-dark" id="compareSequences">Calcular LCS</button>
+            <div id="lcsResult" class="result-note" aria-live="polite"></div>
+            <div id="lcsTableWrap" class="table-wrap"></div>
+            <p class="result-note">Una diferencia puntual puede señalar un cambio; la LCS por sí sola no determina la causa ni diagnostica una fuga.</p>
+          </article>
+
+          <article class="tool-card huffman-card">
+            <div class="tool-card-head">
+              <div><span class="tool-kicker">COMPRESIÓN · HUFFMAN</span><h3>Codifica telemetría</h3></div>
+              <span class="tool-symbol" aria-hidden="true">01</span>
+            </div>
+            <p>Los símbolos frecuentes reciben códigos más cortos. Construye el árbol y mira cuánto ocupa tu mensaje.</p>
+            <label class="message-label" for="huffmanMessage">Mensaje de prueba
+              <textarea id="huffmanMessage" rows="2" maxlength="160" spellcheck="false">FUGA DE AGUA</textarea>
+            </label>
+            <button type="button" class="button button-dark" id="encodeMessage">Construir código</button>
+            <div id="huffmanResult" class="result-note" aria-live="polite"></div>
+            <div id="huffmanMetrics" class="compression-metrics"></div>
+            <div class="table-wrap">
+              <table class="code-table">
+                <thead><tr><th>Símbolo</th><th>Frecuencia</th><th>Código</th><th>Bits</th></tr></thead>
+                <tbody id="huffmanCodes"></tbody>
+              </table>
+            </div>
+            <div id="huffmanTree" class="huffman-tree-wrap" aria-label="Árbol de Huffman"></div>
+            <p class="result-note">Ahorro estimado frente a bytes UTF-8 sin comprimir. No incluye el costo de guardar o transmitir el árbol y sus metadatos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="conclusions-section section-shell" id="conclusiones">
+      <div class="conclusion-mark" aria-hidden="true">✳</div>
+      <div class="conclusion-copy">
+        <p class="eyebrow eyebrow-light">05 / Conclusiones</p>
+        <h2>Los algoritmos ayudan a decidir.<br><span>El contexto ayuda a decidir bien.</span></h2>
+        <div class="conclusion-grid">
+          <p><strong>Planificación.</strong> Kruskal y Prim encuentran un árbol de expansión mínimo de 20 millones para estos datos; ambos conectan los siete puntos con seis tramos.</p>
+          <p><strong>Mantenimiento.</strong> BFS y DFS ofrecen recorridos distintos; BST, ordenamiento y Greedy organizan tareas, pero no sustituyen el criterio técnico ni los tiempos reales de desplazamiento.</p>
+          <p><strong>Telemetría.</strong> Huffman reduce bits cuando la frecuencia de símbolos lo permite, aunque el ahorro real depende de transmitir también el modelo. LCS destaca coincidencias; las anomalías requieren interpretación.</p>
+        </div>
+        <a class="button button-outline" href="#inicio">Volver al inicio <span aria-hidden="true">↑</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand brand-footer" href="#inicio"><span class="brand-mark" aria-hidden="true">A</span><span>Aqua<span class="brand-light">Lab</span></span></a>
+    <p>Un proyecto de algoritmos para pensar una red comunitaria de agua.</p>
+    <span>Datos de demostración · no representan una red operativa</span>
+  </footer>
+</body>
+</html>
