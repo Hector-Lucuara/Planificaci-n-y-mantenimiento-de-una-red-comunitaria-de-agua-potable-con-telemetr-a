@@ -1,5 +1,6 @@
-from collections import deque
+from collections import Counter, deque
 import heapq
+from itertools import count
 
 # 1. DATOS DEL PROBLEMA
 ARISTAS = [
@@ -192,6 +193,90 @@ def lcs(s1, s2):
             j -= 1
     return dp[n][m], list(reversed(secuencia))
 
+# 11. HUFFMAN (compresión de mensajes de telemetría)
+class NodoHuffman:
+    def __init__(self, simbolo=None, frecuencia=0, izq=None, der=None):
+        self.simbolo = simbolo
+        self.frecuencia = frecuencia
+        self.izq = izq
+        self.der = der
+
+def construir_arbol_huffman(texto):
+    frecuencias = Counter(texto)
+    if not frecuencias:
+        return None
+
+    orden = count()
+    heap = [
+        (frecuencia, next(orden), NodoHuffman(simbolo, frecuencia))
+        for simbolo, frecuencia in frecuencias.items()
+    ]
+    heapq.heapify(heap)
+
+    while len(heap) > 1:
+        frecuencia_izq, _, izq = heapq.heappop(heap)
+        frecuencia_der, _, der = heapq.heappop(heap)
+        padre = NodoHuffman(
+            frecuencia=frecuencia_izq + frecuencia_der,
+            izq=izq,
+            der=der,
+        )
+        heapq.heappush(heap, (padre.frecuencia, next(orden), padre))
+
+    return heap[0][2]
+
+def generar_codigos_huffman(raiz):
+    codigos = {}
+
+    def recorrer(nodo, prefijo):
+        if nodo is None:
+            return
+        if nodo.simbolo is not None:
+            codigos[nodo.simbolo] = prefijo or "0"
+            return
+        recorrer(nodo.izq, prefijo + "0")
+        recorrer(nodo.der, prefijo + "1")
+
+    recorrer(raiz, "")
+    return codigos
+
+def codificar_huffman(texto, codigos):
+    try:
+        return "".join(codigos[simbolo] for simbolo in texto)
+    except KeyError as error:
+        raise ValueError(f"Símbolo sin código Huffman: {error.args[0]!r}") from error
+
+def decodificar_huffman(bits, raiz):
+    if any(bit not in "01" for bit in bits):
+        raise ValueError("El mensaje codificado solo puede contener 0 y 1.")
+    if raiz is None:
+        if bits:
+            raise ValueError("No se puede decodificar bits sin un árbol Huffman.")
+        return ""
+    if raiz.simbolo is not None:
+        if "1" in bits:
+            raise ValueError("El árbol de un solo símbolo solo admite el código 0.")
+        return raiz.simbolo * len(bits)
+
+    resultado = []
+    actual = raiz
+    for bit in bits:
+        actual = actual.izq if bit == "0" else actual.der
+        if actual is None:
+            raise ValueError("El mensaje contiene una ruta inexistente en el árbol.")
+        if actual.simbolo is not None:
+            resultado.append(actual.simbolo)
+            actual = raiz
+
+    if actual is not raiz:
+        raise ValueError("El mensaje termina a mitad de un código Huffman.")
+    return "".join(resultado)
+
+def comprimir_huffman(texto):
+    raiz = construir_arbol_huffman(texto)
+    codigos = generar_codigos_huffman(raiz)
+    return raiz, codigos, codificar_huffman(texto, codigos)
+
 # ============================================================
 # EJECUCIÓN Y RESULTADOS
 # ============================================================
@@ -276,3 +361,18 @@ if __name__ == "__main__":
     print(f"  S2 = {s2}")
     print(f"  LCS (longitud {longitud}) = {secuencia}")
     print(f"  Anomalía: 3.ª lectura cambió 15 → 20")
+
+    # 11. Huffman
+    mensaje = "FUGA DE AGUA"
+    raiz_huffman, codigos_huffman, bits = comprimir_huffman(mensaje)
+    bits_originales = len(mensaje.encode("utf-8")) * 8
+    ahorro = bits_originales - len(bits)
+    porcentaje = (ahorro / bits_originales * 100) if bits_originales else 0
+    print("\n[HUFFMAN] Compresión de telemetría:")
+    print(f"  Mensaje: {mensaje!r}")
+    print(f"  Códigos: {codigos_huffman}")
+    print(f"  Codificado: {bits}")
+    print(f"  Decodificado: {decodificar_huffman(bits, raiz_huffman)!r}")
+    print(f"  Bits UTF-8 originales: {bits_originales}")
+    print(f"  Bits codificados: {len(bits)} (sin contar el árbol ni sus metadatos)")
+    print(f"  Ahorro estimado: {ahorro} bits ({porcentaje:.1f}%)")
