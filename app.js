@@ -221,6 +221,7 @@ function calculateNetworkResult() {
 function renderNetwork() {
   const graph = byId("networkGraph");
   graph.replaceChildren();
+  byId("originSelect").disabled = networkMode === "kruskal";
   const stepCount = networkResult.steps.length;
   const currentStep = Math.min(networkStep, Math.max(0, stepCount - 1));
   const activeEdges = new Set();
@@ -295,11 +296,12 @@ function renderNetwork() {
   } else {
     const currentNodes = networkResult.steps.slice(0, currentStep + 1);
     const order = currentNodes.map((step) => step.node).join(" → ");
+    const pointWord = currentNodes.length === 1 ? "punto" : "puntos";
     const extra = networkMode === "bfs"
       ? `<span>Saltos desde el origen: ${currentNodes.map((step) => `${step.node} ${step.distance}`).join(" · ")}</span>`
       : `<span>${networkResult.cycles.length} conexión(es) alternativa(s) detectada(s) como ciclo en esta red.</span>`;
     byId("networkSummary").innerHTML =
-      `<strong>${currentNodes.length} <small>puntos</small></strong><span>Orden: ${escapeHtml(order)}</span>${extra}`;
+      `<strong>${currentNodes.length} <small>${pointWord}</small></strong><span>Orden: ${escapeHtml(order)}</span>${extra}`;
   }
 }
 
@@ -509,7 +511,7 @@ function compareSequences() {
     const changed = Math.max(left.length, right.length);
     resultElement.innerHTML =
       `<strong>Longitud ${result.length}</strong> · subsecuencia: ` +
-      `${result.sequence.map((value) => `<span class="sequence-badge">${value}</span>`).join("") || "ningún valor común"}` +
+      `${result.sequence.map((value) => `<span class="sequence-badge">${value}</span>`).join(" ") || "ningún valor común"}` +
       `<br>La matriz tiene ${(left.length + 1) * (right.length + 1)} celdas; se comparan ${changed} posiciones máximas.`;
     renderLcsTable(left, right, result);
   } catch (error) {
